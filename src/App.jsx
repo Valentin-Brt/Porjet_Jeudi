@@ -16,27 +16,27 @@ const App = () => {
   const isFirstRender = useRef(true); // Référence pour vérifier le premier rendu du composant
 
   useEffect(() => {
-    // Effet pour mettre à jour localStorage lorsque guests change
+    // Effet pour Maj localStorage lorsque guests change
     if (!isFirstRender.current) {
-      // Vérifie si ce n'est pas le premier rendu
-      localStorage.setItem("guests", JSON.stringify(guests)); // Met à jour localStorage avec la liste des invités
+      // Vérifie si ce n'est pas le 1er rendu
+      localStorage.setItem("guests", JSON.stringify(guests)); // Maj localStorage avec la liste des invités
     } else {
-      isFirstRender.current = false; // Passe isFirstRender à false après le premier rendu
+      isFirstRender.current = false; // Passe isFirstRender à false après le 1er rendu
     }
-  }, [guests]); // Dépendance : surveille les changements dans guests
+  }, [guests]); // Surveille les changements dans guests
 
   const handleNewGuestChange = (e) => {
     // Gestionnaire de changement pour les champs du formulaire d'ajout d'invité
     const { name, value, type, checked } = e.target;
     setNewGuest((prevState) => ({
       ...prevState,
-      [name]: type === "checkbox" ? checked : value, // Met à jour les valeurs du nouvel invité en fonction du type de champ
+      [name]: type === "checkbox" ? checked : value, // Maj les valeurs du nouvel invité en fonction du type de champ
     }));
   };
 
   const handleAddGuest = (e) => {
     // Gestionnaire pour ajouter un nouvel invité
-    e.preventDefault(); // Empêche le comportement par défaut du formulaire
+    e.preventDefault();
 
     // Validation des champs obligatoires et des conditions d'âge
     if (!newGuest.name || newGuest.age === 0 || !newGuest.hobbies) {
@@ -59,11 +59,11 @@ const App = () => {
     // Création de l'objet invité à ajouter à la liste
     const guestToAdd = {
       ...newGuest,
-      id: guests.length + 1, // Attribution d'un nouvel identifiant unique
+      id: guests.length + 1, // Attribution Id unique
       hobbies: newGuest.hobbies.split(",").map((hobby) => hobby.trim()), // Transformation des hobbies en tableau
     };
 
-    // Mise à jour de la liste des invités et réinitialisation du formulaire
+    // Maj de la liste des invités et réinitialisation du formulaire
     setGuests([...guests, guestToAdd]);
     setNewGuest({ name: "", age: 0, major: false, hobbies: "" });
   };
@@ -72,13 +72,13 @@ const App = () => {
     // Gestionnaire pour sélectionner un invité dans la liste
     const guestId = Number(e.target.value);
     const guest = guests.find((g) => g.id === guestId); // Recherche de l'invité par son identifiant
-    setSelectedGuest(guest); // Mise à jour de l'état de l'invité sélectionné
+    setSelectedGuest(guest); // Maj de l'état de l'invité sélectionné
   };
 
   const handleDeleteGuest = (guestId) => {
     // Gestionnaire pour supprimer un invité de la liste
     const updatedGuests = guests.filter((guest) => guest.id !== guestId); // Filtrage des invités pour exclure celui à supprimer
-    setGuests(updatedGuests); // Mise à jour de la liste des invités
+    setGuests(updatedGuests); // Maj de la liste des invités
 
     if (selectedGuest?.id === guestId) {
       // Si l'invité supprimé était sélectionné, réinitialiser l'état de l'invité sélectionné
@@ -140,7 +140,7 @@ const App = () => {
         ))}
       </select>
 
-      {/* Affichage des détails de l'invité sélectionné */}
+      {/* Affichage détails de l'invité sélectionné */}
       {selectedGuest && (
         <div className="guest-details">
           <h2>Détails Invité</h2>
@@ -148,7 +148,7 @@ const App = () => {
           <p>Âge : {selectedGuest.age}</p>
           <p>Majeur : {selectedGuest.major ? "Oui" : "Non"}</p>
           <p>Hobbies : {selectedGuest.hobbies.join(", ")}</p>
-          {/* Bouton de suppression de l'invité */}
+          {/* Bouton delete de l'invité */}
           <button
             onClick={() => handleDeleteGuest(selectedGuest.id)}
             className="delete-button"
@@ -163,12 +163,12 @@ const App = () => {
           {guests.map((guest) => (
             <li key={guest.id}>
               {guest.name}
-              {/* Bouton de suppression de l'invité dans la liste */}
+              {/* Bouton delete de l'invité dans la liste */}
               <button
                 onClick={() => handleDeleteGuest(guest.id)}
                 className="delete-button"
               >
-                {/* Utilisation de la croix rouge avec CSS */}
+                {/* Utilisation de la croix rouge avec CSS --> A revoir */}
               </button>
             </li>
           ))}
